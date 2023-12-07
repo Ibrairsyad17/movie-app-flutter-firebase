@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1069269033558",
+    "project_id": "mp-win",
+    "storage_bucket": "mp-win.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069269033558:android:9803727aecf8b2d34491f7",
+        "android_client_info": {
+          "package_name": "com.example.movie_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARme6SNUC4XEndlvmqhEy6RronqoSQX5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
