@@ -17,7 +17,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
   late ScrollController _controller;
   bool _showFab = true;
   bool _isElevated = true;
@@ -54,7 +53,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -85,17 +83,18 @@ class _HomeState extends State<Home> {
           appBar: AppBar(
             backgroundColor: Colors.grey[900],
             centerTitle: true,
-            title: Text('Daftar Film', style: TextStyle(
-                fontSize: 20.0,
-                color: Colors.red[800],
-                fontWeight: FontWeight.bold
-              ),
+            title: Text(
+              'Daftar Film',
+              style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.red[800],
+                  fontWeight: FontWeight.bold),
             ),
             actions: <Widget>[
               IconButton(
-                onPressed: () async{
+                onPressed: () async {
                   await _auth.signOut();
-                }, 
+                },
                 icon: Icon(Icons.logout_outlined),
                 iconSize: 30.0,
                 color: Colors.amber,
@@ -109,7 +108,10 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.grey[900],
           floatingActionButton: _showFab
               ? FloatingActionButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder:(BuildContext context) => SearchPage())),
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => SearchPage())),
                   tooltip: 'Cari Film',
                   elevation: _isVisible ? 0.0 : null,
                   backgroundColor: Colors.amber[700],
@@ -147,18 +149,25 @@ class _DemoBottomAppBar extends StatelessWidget {
         child: Row(
           children: <Widget>[
             // * PROFIL --->
-            
+
             IconButton(
               tooltip: 'Profil Kamu',
-              icon: const Icon(Icons.person_2_sharp, color: Colors.white,),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder:(BuildContext context) => ProfileDetail())),
+              icon: const Icon(
+                Icons.person_2_sharp,
+                color: Colors.white,
+              ),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => ProfileDetail())),
             ),
-            
+
             // * BOOKMARK --->
             IconButton(
               tooltip: 'Bookmark',
               icon: const Icon(Icons.bookmark, color: Colors.white),
-              onPressed: () => Navigator.of(context).push( MaterialPageRoute(builder: (BuildContext context) => const BookmarkCon())),
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => const BookmarkCon())),
             ),
           ],
         ),

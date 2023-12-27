@@ -12,7 +12,6 @@ class BookmarkCon extends StatefulWidget {
 }
 
 class _BookmarkConState extends State<BookmarkCon> {
-
   // Elevated
 
   late ScrollController _controller;
@@ -51,7 +50,6 @@ class _BookmarkConState extends State<BookmarkCon> {
     });
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -66,16 +64,20 @@ class _BookmarkConState extends State<BookmarkCon> {
     super.dispose();
   }
 
-  final CollectionReference _bookmarkListUser = FirebaseFirestore.instance.collection('bookmark-items').doc(FirebaseAuth.instance.currentUser!.email).collection('items');
+  final CollectionReference _bookmarkListUser = FirebaseFirestore.instance
+      .collection('bookmark-items')
+      .doc(FirebaseAuth.instance.currentUser!.email)
+      .collection('items');
 
   // ! DELETE ITEMS ===>
 
-  Future<void> _deleteItems(String itemsID) async{
+  Future<void> _deleteItems(String itemsID) async {
     await _bookmarkListUser.doc(itemsID).delete();
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Berhasil Menghapus Dari Bookmark')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Berhasil Menghapus Dari Bookmark')));
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,232 +85,238 @@ class _BookmarkConState extends State<BookmarkCon> {
       // ! APPBAR ===>
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back), 
-          onPressed: () => Navigator.pop(context), 
-          color: Colors.red[800],),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+          color: Colors.red[800],
+        ),
         centerTitle: true,
         backgroundColor: Colors.grey[900],
-        title: Text('Bookmark Film Kamu', style: TextStyle(
-            fontSize: 20.0,
-            color: Colors.red[800],
-            fontWeight: FontWeight.w600
-          ),
+        title: Text(
+          'Bookmark Film Kamu',
+          style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.red[800],
+              fontWeight: FontWeight.w600),
         ),
       ),
       body: StreamBuilder(
         stream: _bookmarkListUser.snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot){
+        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
           if (streamSnapshot.hasData) {
             return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context, index){
-                final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
+                itemCount: streamSnapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot documentSnapshot =
+                      streamSnapshot.data!.docs[index];
 
-                // ! DETAIL FILM ====>
+                  // ! DETAIL FILM ====>
 
-                void _showDetails(BuildContext context) => showModalBottomSheet<void>(
-                  backgroundColor: Colors.grey[800],
-                  isScrollControlled: true,
-                  context: context, 
-                  builder: (BuildContext context) => 
-                    Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                    
-                    
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.close,
-                                      color: Colors.red,
-                                      size: 25,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ),
-                                Center(
-                                  child: Text('${documentSnapshot["title"]}',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w800,
-                                        wordSpacing: 0,
-                                        letterSpacing: 0,
-                                        fontSize: 25,
-                                        color: Colors.red[800],
-                                      )),
-                                ),
-                              ],
-                            ),
-
-                            SizedBox(height: 20.0,),
-                    
-                    
-                            Text(
-                              '${documentSnapshot["year"]}',
-                              style: TextStyle(
-                                color: Colors.red[500],
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w200
-                              ),
-                            ),
-
-                            SizedBox(height: 20.0,),
-                    
-                    
-                            Container(
-                              width: 120,
-                              height: 180, // Border width
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0)),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15.0),
-                                child: SizedBox.fromSize(
-                                  size: Size.fromRadius(48), // Image radius
-                                  child: Image.network(
-                                    'https://drive.google.com/uc?export=view&id=${documentSnapshot["image"]}', 
-                                    fit: BoxFit.cover
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            SizedBox(height: 20.0,),
-                    
-                    
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                  void _showDetails(BuildContext context) =>
+                      showModalBottomSheet<void>(
+                        backgroundColor: Colors.grey[800],
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (BuildContext context) => Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20.0, horizontal: 60.0),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                Icon(
-                                  Icons.star, color: Colors.amber[600],
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: <Widget>[
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                        icon: const Icon(
+                                          Icons.close,
+                                          color: Colors.red,
+                                          size: 25,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ),
+                                    Center(
+                                      child:
+                                          Text('${documentSnapshot["title"]}',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w800,
+                                                wordSpacing: 0,
+                                                letterSpacing: 0,
+                                                fontSize: 25,
+                                                color: Colors.red[800],
+                                              )),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 20.0,),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
                                 Text(
-                                  '${documentSnapshot["rate"]}',
+                                  '${documentSnapshot["year"]}',
                                   style: TextStyle(
-                                    color: Colors.red[800],
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w700
-                                  ),
+                                      color: Colors.red[500],
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.w200),
                                 ),
-                                const SizedBox(width: 5.0,),
-                                const Text(
-                                  '/10',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17.0,
-                                    fontWeight: FontWeight.w700
-                                  ),
+                                SizedBox(
+                                  height: 20.0,
                                 ),
-                              ],
-                            ),
-
-                            SizedBox(height: 20.0,),
-                    
-                            Container(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Sinopsis',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17.0,
-                                      fontWeight: FontWeight.w700
+                                Container(
+                                  width: 120,
+                                  height: 180, // Border width
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(15.0)),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    child: SizedBox.fromSize(
+                                      size: Size.fromRadius(48), // Image radius
+                                      child: Image.network(
+                                          'https://drive.google.com/uc?export=view&id=${documentSnapshot["image"]}',
+                                          fit: BoxFit.cover),
                                     ),
                                   ),
-                                  const SizedBox(height: 10.0,),
-                                  Text('${documentSnapshot["synopsis"]}', 
-                                  style: const TextStyle(color: Colors.white),)
-                                ],
-                              ),
-                            ),
-                          ]
+                                ),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.amber[600],
+                                    ),
+                                    const SizedBox(
+                                      width: 20.0,
+                                    ),
+                                    Text(
+                                      '${documentSnapshot["rate"]}',
+                                      style: TextStyle(
+                                          color: Colors.red[800],
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    const SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    const Text(
+                                      '/10',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 17.0,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Sinopsis',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17.0,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      const SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Text(
+                                        '${documentSnapshot["synopsis"]}',
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ]),
                         ),
-                      ),
-                );
+                      );
 
-                // ! CARD FILM BOOKMARK ==>
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
-                  child: Card(
-                        color: Colors.grey[900],
-                        shadowColor: Colors.grey[800],
-                        elevation: 0.1,
-                        child: ListTile(
-                          onTap: () => _showDetails(context),
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(color: Color.fromARGB(255, 144, 10, 0), width: 1),
-                            borderRadius: BorderRadius.circular(10),
-                          ), 
-                          tileColor: Colors.grey[900],
-                          hoverColor: Colors.grey[800],
-                          textColor: Colors.white,
-                          contentPadding: const EdgeInsets.all(20.0),
-                          leading: Container(
-                            padding: EdgeInsets.only(right: 15.0),
-                            width: 100,
-                            child: Image(
+                  // ! CARD FILM BOOKMARK ==>
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
+                    child: Card(
+                      color: Colors.grey[900],
+                      shadowColor: Colors.grey[800],
+                      elevation: 0.1,
+                      child: ListTile(
+                        onTap: () => _showDetails(context),
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              color: Color.fromARGB(255, 144, 10, 0), width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        tileColor: Colors.grey[900],
+                        hoverColor: Colors.grey[800],
+                        textColor: Colors.white,
+                        contentPadding: const EdgeInsets.all(20.0),
+                        leading: Container(
+                          padding: EdgeInsets.only(right: 15.0),
+                          width: 100,
+                          child: Image(
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                'https://drive.google.com/uc?export=view&id=${documentSnapshot["image"]}'
-                                )
-                            ),
-                          ),
-                          title: Text("${documentSnapshot["title"]}"),
-                          subtitle:
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('${documentSnapshot["year"]}'),
-                              ]),
-                              // ! DELETE ICON
-                          trailing: IconButton(
-                                onPressed: () async {
-                                  _bookmarkListUser.doc(documentSnapshot.id).delete();
-
-                                  ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                      content: Text('Berhasil Menghapus Dari Bookmark')
-                                    )
-                                  );
-                                },
-                                icon: Icon(Icons.delete, color: Colors.red[800],),
-                              ),
-                          isThreeLine: true,
+                                  'https://drive.google.com/uc?export=view&id=${documentSnapshot["image"]}')),
                         ),
+                        title: Text("${documentSnapshot["title"]}"),
+                        subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('${documentSnapshot["year"]}'),
+                            ]),
+                        // ! DELETE ICON
+                        trailing: IconButton(
+                          onPressed: () async {
+                            _bookmarkListUser.doc(documentSnapshot.id).delete();
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Berhasil Menghapus Dari Bookmark')));
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.red[800],
+                          ),
+                        ),
+                        isThreeLine: true,
                       ),
-                );
-              }
-            );
+                    ),
+                  );
+                });
           }
 
           return const Text('Kamu Belum Menambahkan Bookmark');
         },
       ),
       floatingActionButton: _showFab
-        ? FloatingActionButton(
-            onPressed: (){},
-            tooltip: 'Cari Film',
-            elevation: _isVisible ? 0.0 : null,
-            backgroundColor: Colors.amber[700],
-            child: const Icon(Icons.search),
-          )
-        : null,
+          ? FloatingActionButton(
+              onPressed: () {},
+              tooltip: 'Cari Film',
+              elevation: _isVisible ? 0.0 : null,
+              backgroundColor: Colors.amber[700],
+              child: const Icon(Icons.search),
+            )
+          : null,
       floatingActionButtonLocation: _fabLocation,
       bottomNavigationBar:
-        _DemoBottomAppBar(isElevated: _isElevated, isVisible: _isVisible),
+          _DemoBottomAppBar(isElevated: _isElevated, isVisible: _isVisible),
     );
   }
 }
@@ -336,7 +344,10 @@ class _DemoBottomAppBar extends StatelessWidget {
           children: <Widget>[
             IconButton(
               tooltip: 'Profile',
-              icon: const Icon(Icons.person_2_sharp, color: Colors.white,),
+              icon: const Icon(
+                Icons.person_2_sharp,
+                color: Colors.white,
+              ),
               onPressed: () {},
             ),
           ],

@@ -13,7 +13,6 @@ class MoviesList extends StatefulWidget {
 class _MoviesListState extends State<MoviesList> {
   @override
   Widget build(BuildContext context) {
-    
     final movies = Provider.of<List<MoviesData>>(context);
 
     // movies.forEach((movie) {
@@ -21,16 +20,15 @@ class _MoviesListState extends State<MoviesList> {
     //   print(movie.synopsis);
     //   print(movie.year);
     //   print(movie.rate);
-      
+
     // });
 
     return ListView.builder(
       itemCount: movies.length,
       padding: EdgeInsets.all(20.0),
-      itemBuilder: (context, index){
+      itemBuilder: (context, index) {
         return MovieTile(movie: movies[index]);
       },
     );
-    
   }
 }

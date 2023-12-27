@@ -16,7 +16,6 @@ class ProfileDetail extends StatefulWidget {
 String idEdit = '';
 
 class _ProfileDetailState extends State<ProfileDetail> {
-
   // Elevated
 
   late ScrollController _controller;
@@ -55,7 +54,6 @@ class _ProfileDetailState extends State<ProfileDetail> {
     });
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -78,91 +76,108 @@ class _ProfileDetailState extends State<ProfileDetail> {
       appBar: AppBar(
         leading: IconButton(
           // * KEMBALI
-          icon: const Icon(Icons.arrow_back), 
-          onPressed: () => Navigator.pop(context), 
-          color: Colors.red[800],),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+          color: Colors.red[800],
+        ),
         backgroundColor: Colors.grey[900],
-        title: Text('Profil Kamu', style: TextStyle(
-            fontSize: 20.0,
-            color: Colors.red[800],
-            fontWeight: FontWeight.w600
-          ),
+        title: Text(
+          'Profil Kamu',
+          style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.red[800],
+              fontWeight: FontWeight.w600),
         ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('userProfile').where('email', isEqualTo: FirebaseAuth.instance.currentUser!.email).snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot){
-
+        stream: FirebaseFirestore.instance
+            .collection('userProfile')
+            .where('email', isEqualTo: FirebaseAuth.instance.currentUser!.email)
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
           if (streamSnapshot.hasData) {
             // ! TAMPIL PROFIL
             return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context, index){
-                final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
-                idEdit = documentSnapshot.id;
+                itemCount: streamSnapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot documentSnapshot =
+                      streamSnapshot.data!.docs[index];
+                  idEdit = documentSnapshot.id;
 
-                
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
-                  child: Card(
-                        color: Colors.grey[900],
-                        shadowColor: Colors.grey[800],
-                        elevation: 0.1,
-                        child: ListTile(
-                          onTap: () { 
-                            Navigator.push(context, MaterialPageRoute(builder:(BuildContext context) => ProfileEdit(id: idEdit)));
-                          },
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(color: Color.fromARGB(255, 144, 10, 0), width: 1),
-                            borderRadius: BorderRadius.circular(10),
-                          ), 
-                          tileColor: Colors.grey[900],
-                          hoverColor: Colors.grey[800],
-                          textColor: Colors.white,
-                          contentPadding: const EdgeInsets.all(20.0),
-                          leading: Container(
-                            padding: EdgeInsets.only(right: 15.0),
-                            width: 100,
-                            child: Image(
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
+                    child: Card(
+                      color: Colors.grey[900],
+                      shadowColor: Colors.grey[800],
+                      elevation: 0.1,
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ProfileEdit(id: idEdit)));
+                        },
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              color: Color.fromARGB(255, 144, 10, 0), width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        tileColor: Colors.grey[900],
+                        hoverColor: Colors.grey[800],
+                        textColor: Colors.white,
+                        contentPadding: const EdgeInsets.all(20.0),
+                        leading: Container(
+                          padding: EdgeInsets.only(right: 15.0),
+                          width: 100,
+                          child: Image(
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                '${documentSnapshot['imageLink']}'
-                                )
-                            ),
-                          ),
-                          title: Text("${documentSnapshot["name"]}"),
-                          subtitle:
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('${documentSnapshot["genre"]}'),
-                              ]),
-                          trailing: IconButton(
-                                onPressed: () => Navigator.push(context, MaterialPageRoute(builder:(BuildContext context) => ProfileEdit(id: idEdit,))),
-                                icon: Icon(Icons.edit, color: Colors.red[800],),
-                              ),
-                          isThreeLine: true,
+                                  '${documentSnapshot['imageLink']}')),
                         ),
+                        title: Text("${documentSnapshot["name"]}"),
+                        subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('${documentSnapshot["genre"]}'),
+                            ]),
+                        trailing: IconButton(
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ProfileEdit(
+                                        id: idEdit,
+                                      ))),
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.red[800],
+                          ),
+                        ),
+                        isThreeLine: true,
                       ),
-                );
-              }
-            );
+                    ),
+                  );
+                });
           }
           return const Text('Kamu Belum Menambahkan Profile');
         },
       ),
       floatingActionButton: _showFab
-        ? FloatingActionButton(
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder:(BuildContext context) => SearchPage())),
-            tooltip: 'Cari Film',
-            elevation: _isVisible ? 0.0 : null,
-            backgroundColor: Colors.amber[700],
-            child: const Icon(Icons.search),
-          )
-        : null,
+          ? FloatingActionButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => SearchPage())),
+              tooltip: 'Cari Film',
+              elevation: _isVisible ? 0.0 : null,
+              backgroundColor: Colors.amber[700],
+              child: const Icon(Icons.search),
+            )
+          : null,
       floatingActionButtonLocation: _fabLocation,
       bottomNavigationBar:
-        _DemoBottomAppBar(isElevated: _isElevated, isVisible: _isVisible),
+          _DemoBottomAppBar(isElevated: _isElevated, isVisible: _isVisible),
     );
   }
 }
@@ -189,16 +204,21 @@ class _DemoBottomAppBar extends StatelessWidget {
         child: Row(
           children: <Widget>[
             ElevatedButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder:(BuildContext context) => ProfileEdit(id: idEdit,))),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => ProfileEdit(
+                            id: idEdit,
+                          ))),
               style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.all(18.0),
                   elevation: 2.0,
                   shape: StadiumBorder(),
-                  backgroundColor: Colors.amber[500]
-                ),
-              child: Text('Edit Atau Tambah Profil', style: TextStyle(
-                color: Colors.white
-              ),),
+                  backgroundColor: Colors.amber[500]),
+              child: Text(
+                'Edit Atau Tambah Profil',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),
